@@ -13,5 +13,6 @@ Contenidos
    contents/intro
    contents/install_vm
    contents/install_iverilog
+   contents/fundamentos
    contents/guide
    
