@@ -24,5 +24,6 @@ Instalación en Windows
 Descargue el `instalador de iVerilog <http://bleyer.org/icarus/>`_. Inicie el instalador y siga las instrucciones de instalación en pantalla. Cuando se le solicite, seleccione la opción de añadir el ejecutable al PATH.
 
 .. image:: ./../img/iverilog_install.PNG
+   :align: center
 
 Este proceso instalará también la herramienta `GTKWave <http://gtkwave.sourceforge.net/>`_, la cuál será de utilidad para visualizar los resultados durante el proceso de verificación.

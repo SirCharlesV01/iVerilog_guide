@@ -38,6 +38,16 @@
 <p>En esta sección se cubren los principales fundamentos del lenguaje de descripción de hardware Verilog.</p>
 <div class="section" id="modulos">
 <h2>Módulos<a class="headerlink" href="#modulos" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Un módulo en Verilog es un bloque de código que ejecuta cierta funcionalidad. Un módulo puede contener una instancia de otro módulo, y el módulo de nivel superior puede comunicarse con los módulos de nivel inferior a través de sus puertos de entrada y salida.</p>
+<div class="section" id="sintaxis">
+<h3>Sintaxis<a class="headerlink" href="#sintaxis" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Los módulos se definen entre las <em>keywords</em> <code class="docutils literal notranslate"><span class="pre">module</span></code> y <code class="docutils literal notranslate"><span class="pre">endmodule</span></code>. El nombre del módulo se coloca inmediatemente después de <code class="docutils literal notranslate"><span class="pre">module</span></code> y además se pueden definir sus puertos, de la siguiente manera:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="p">([</span><span class="n">lista_de_puertos</span><span class="p">]);</span>
+    <span class="c1">// Contenido del modulo</span>
+<span class="k">endmodule</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="section" id="simulacion-y-sintesis">
 <h2>Simulación y Síntesis<a class="headerlink" href="#simulacion-y-sintesis" title="Enlazar permanentemente con este título">¶</a></h2>

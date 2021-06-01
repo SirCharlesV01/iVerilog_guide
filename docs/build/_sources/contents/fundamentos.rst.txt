@@ -1,3 +1,5 @@
+.. highlight:: verilog
+
 Fundamentos del lenguaje Verilog
 ================================
 
@@ -5,6 +7,19 @@ En esta sección se cubren los principales fundamentos del lenguaje de descripci
 
 Módulos
 -------
+
+Un módulo en Verilog es un bloque de código que ejecuta cierta funcionalidad. Un módulo puede contener una instancia de otro módulo, y el módulo de nivel superior puede comunicarse con los módulos de nivel inferior a través de sus puertos de entrada y salida.
+
+Sintaxis
+^^^^^^^^
+
+Los módulos se definen entre las *keywords* ``module`` y ``endmodule``. El nombre del módulo se coloca inmediatemente después de ``module`` y además se pueden definir sus puertos, de la siguiente manera::
+
+    module <nombre> ([lista_de_puertos]);
+        // Contenido del modulo
+    endmodule
+
+
 
 Simulación y Síntesis
 ---------------------

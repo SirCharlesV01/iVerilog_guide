@@ -15,4 +15,3 @@ Contenidos
    contents/install_iverilog
    contents/fundamentos
    contents/guide
-   
