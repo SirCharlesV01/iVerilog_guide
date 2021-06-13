@@ -79,6 +79,61 @@ Los registros pueden almacenar valores y son instanciados de igual forma que los
     reg [7:0] d1;   //Registro de 8 bits
 
 
+Asignaciones bloqueantes y no-bloqueantes
+-----------------------------------------
+
+En Verilog hay dos formas distintas de realizar las asignaciones, bloqueantes y no bloqueantes. Para una asignación bloqueante se utiliza el operador ``=``. Para asignaciones no bloqueantes se utiliza el operador ``<=``.
+
+Asignaciones bloqueantes
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Las asignaciones bloqueantes se denominan así porque ninguna otra asignación es realizada hasta que se termine de realizar la asignación actual. Por ejemplo, considere el siguiente código::
+
+    a = b;
+    c = a;
+
+En ese caso, la segunda asignación no es realizada hasta que se completa la primera, por lo que en Verilog el resultado final de esas dos asignaciones bloqueantes sería que ``c == b``. Debido a este comportamiento, las asignaciones bloqueantes son utilizadas para describir lógica combinacional.
+
+Asignaciones no bloqueantes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Las asignaciones no bloqueantes se realizan todas simultáneamente, considere el siguiente código::
+
+    a <= b;
+    c <= a;
+
+En este caso, ambas asignaciones se realizan simulatáneamente, por lo que en este caso no se puede decir que ``c == b``, ya que existe una condición de carrera. Por esta razón este tipo de asignaciones son utilizadas para describir lógica secuencial.
+
+Bloques Always
+--------------
+    
+Los bloques ``always`` en Verilog son utilizados para especificar las acciones a ejecutar en el código; asignaciones, desplazamientos, incluso pueden contener sentencias condicionales como detalladas previamente
+
+La sintáxis de los bloques ``always`` se detalla a continuación::
+
+    always @ (<evento>) begin
+        //Sentencias a ejecutar
+    end
+
+Aunque se declaren múltiples bloques ``always`` dentro del código, en Verilog solo existe un único bloque ``always``. Para realizar la distinción entre lógica secuencial y combinacional, se utiliza la *lista de sensitividad*. La *lista de sensitividad* es una expresión que define cuando el código dentro del bloque ``always`` definido ha de ser ejecutado. A continuación se muestran ejemplos de eventos que pueden ser incluidos en la lista de sensitividad.
+
+* Para lógica combinacional compleja::
+
+    always @(*) begin //El evento * se cumple continuamente
+        p = a ^ b;    //Todas estas asignaciones se realizan continuamente
+        g = a & b;    //Para logica combinacional usamos asignaciones bloqueantes
+        s = p ^ cin;
+        cout = g | (p & cin);
+    end
+
+* Para lógica secuencial::
+
+    always @(posedge clk) begin //Este evento representa los flancos positivos de la señal clk
+        n1 <= d;                //Estas asignaciones se realizan en cada flanco positivo de clk
+        q <= n1;                //Para logica secuencial usamos asiganciones no bloqueantes
+    end
+
+
 Diseño Secuencial
 -----------------
 
@@ -172,39 +227,6 @@ A continuación se presenta la implementación de un módulo multiplexor en Veri
             endcase
         end
     endmodule
-
-Asignaciones bloqueantes y no-bloqueantes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Bloques Always
---------------
-
-Los bloques ``always`` en Verilog son utilizados para especificar las acciones a ejecutar en el código; asignaciones, desplazamientos, incluso pueden contener sentencias condicionales como detalladas previamente
-
-La sintáxis de los bloques ``always`` se detalla a continuación::
-
-    always @ (<evento>) begin
-        //Sentencias a ejecutar
-    end
-
-Aunque se declaren múltiples bloques ``always`` dentro del código, en Verilog solo existe un único bloque ``always``. Para realizar la distinción entre lógica secuencial y combinacional, se utiliza la *lista de sensitividad*. La *lista de sensitividad* es una expresión que define cuando el código dentro del bloque ``always`` definido ha de ser ejecutado. A continuación se muestran ejemplos de eventos que pueden ser incluidos en la lista de sensitividad.
-
-* Para lógica combinacional compleja::
-
-    always @(*) begin //El evento * se cumple continuamente
-        p = a ^ b;    //Todas estas asignaciones se realizan continuamente
-        g = a & b;    //Para logica combinacional usamos asignaciones bloqueantes
-        s = p ^ cin;
-        cout = g | (p & cin);
-    end
-
-* Para lógica secuencial::
-
-    always @(posedge clk) begin //Este evento representa los flancos positivos de la señal clk
-        n1 <= d;                //Estas asignaciones se realizan en cada flanco positivo de clk
-        q <= n1;                //Para logica secuencial usamos asiganciones no bloqueantes
-    end
-    
 
 System Tasks, System Function
 -----------------------------

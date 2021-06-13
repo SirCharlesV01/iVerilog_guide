@@ -4,12 +4,11 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fundamentos del lenguaje Verilog &#8212; documentación de Guía de Verilog HDL - 0.0.1</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -34,10 +33,10 @@
 
           <div class="body" role="main">
             
-  <section id="fundamentos-del-lenguaje-verilog">
+  <div class="section" id="fundamentos-del-lenguaje-verilog">
 <h1>Fundamentos del lenguaje Verilog<a class="headerlink" href="#fundamentos-del-lenguaje-verilog" title="Enlazar permanentemente con este título">¶</a></h1>
 <p>En esta sección se cubren los principales fundamentos del lenguaje de descripción de hardware Verilog.</p>
-<section id="modulos">
+<div class="section" id="modulos">
 <h2>Módulos<a class="headerlink" href="#modulos" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Un módulo en Verilog es un bloque de código que ejecuta cierta funcionalidad. Un módulo puede contener una instancia de otro módulo, y el módulo de nivel superior puede comunicarse con los módulos de nivel inferior a través de sus puertos de entrada y salida.</p>
 <p>Los módulos se definen entre las <em>keywords</em> <code class="docutils literal notranslate"><span class="pre">module</span></code> y <code class="docutils literal notranslate"><span class="pre">endmodule</span></code>. El nombre del módulo se coloca inmediatemente después de <code class="docutils literal notranslate"><span class="pre">module</span></code> y además se pueden definir sus puertos, de la siguiente manera:</p>
@@ -49,11 +48,11 @@
 </pre></div>
 </div>
 <p>Cada puerto (a, b, c, d) debe ser definido como una entrada o salida, según corresponda.</p>
-</section>
-<section id="tipos-de-dato">
+</div>
+<div class="section" id="tipos-de-dato">
 <h2>Tipos de Dato<a class="headerlink" href="#tipos-de-dato" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Los tipos de dato en Verilog buscan representar elementos de almacenamiento, como los bits en un flip-flop, o elementos de transmisión de datos, cómo buses o cables que interconectan puertas logicas.</p>
-<section id="valores-almacenados">
+<div class="section" id="valores-almacenados">
 <h3>Valores Almacenados<a class="headerlink" href="#valores-almacenados" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Existen 4 distintos valores que pueden ser almaenados en las variables de Verilog:</p>
 <table class="docutils align-default">
@@ -81,8 +80,8 @@
 </tr>
 </tbody>
 </table>
-</section>
-<section id="nets">
+</div>
+<div class="section" id="nets">
 <h3>Nets<a class="headerlink" href="#nets" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Los <em>nets</em> son uno de los dos principales tipos de datos presentes en Verilog. Son utilizados para realizar las conexiones entre elementos, ya sean compuertas lógicas o módulos definidos por el usuario.
 Existen distintos tipos de <em>nets</em>, sin embargo el más utilizado es <code class="docutils literal notranslate"><span class="pre">wire</span></code>. Un <code class="docutils literal notranslate"><span class="pre">wire</span></code> en verilog cumple una función similar a los cables que se utilizan en una protoboard para conectar distintos componentes entre sí.</p>
@@ -102,8 +101,8 @@ Existen distintos tipos de <em>nets</em>, sin embargo el más utilizado es <code
 <span class="n">vectWire</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span>
 </pre></div>
 </div>
-</section>
-<section id="variables">
+</div>
+<div class="section" id="variables">
 <h3>Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Las variables son el otro tipo de dato presente en Verilog. Son una abstracción de un elemento de almacenamiento, por ejemplo un flip-flop. En este caso el tipo de variable mas utilizado en Verilog es el <code class="docutils literal notranslate"><span class="pre">`reg</span></code>, utilizado para modelar registros.</p>
 <img alt="../_images/reg.png" class="align-center" src="../_images/reg.png" />
@@ -113,12 +112,65 @@ Existen distintos tipos de <em>nets</em>, sin embargo el más utilizado es <code
 <span class="kt">reg</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">d1</span><span class="p">;</span>   <span class="c1">//Registro de 8 bits</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="diseno-secuencial">
+</div>
+</div>
+<div class="section" id="asignaciones-bloqueantes-y-no-bloqueantes">
+<h2>Asignaciones bloqueantes y no-bloqueantes<a class="headerlink" href="#asignaciones-bloqueantes-y-no-bloqueantes" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>En Verilog hay dos formas distintas de realizar las asignaciones, bloqueantes y no bloqueantes. Para una asignación bloqueante se utiliza el operador <code class="docutils literal notranslate"><span class="pre">=</span></code>. Para asignaciones no bloqueantes se utiliza el operador <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code>.</p>
+<div class="section" id="asignaciones-bloqueantes">
+<h3>Asignaciones bloqueantes<a class="headerlink" href="#asignaciones-bloqueantes" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Las asignaciones bloqueantes se denominan así porque ninguna otra asignación es realizada hasta que se termine de realizar la asignación actual. Por ejemplo, considere el siguiente código:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>En ese caso, la segunda asignación no es realizada hasta que se completa la primera, por lo que en Verilog el resultado final de esas dos asignaciones bloqueantes sería que <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">==</span> <span class="pre">b</span></code>. Debido a este comportamiento, las asignaciones bloqueantes son utilizadas para describir lógica combinacional.</p>
+</div>
+<div class="section" id="asignaciones-no-bloqueantes">
+<h3>Asignaciones no bloqueantes<a class="headerlink" href="#asignaciones-no-bloqueantes" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Las asignaciones no bloqueantes se realizan todas simultáneamente, considere el siguiente código:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">;</span>
+<span class="n">c</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>En este caso, ambas asignaciones se realizan simulatáneamente, por lo que en este caso no se puede decir que <code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">==</span> <span class="pre">b</span></code>, ya que existe una condición de carrera. Por esta razón este tipo de asignaciones son utilizadas para describir lógica secuencial.</p>
+</div>
+</div>
+<div class="section" id="bloques-always">
+<h2>Bloques Always<a class="headerlink" href="#bloques-always" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Los bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> en Verilog son utilizados para especificar las acciones a ejecutar en el código; asignaciones, desplazamientos, incluso pueden contener sentencias condicionales como detalladas previamente</p>
+<p>La sintáxis de los bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> se detalla a continuación:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">evento</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">begin</span>
+    <span class="c1">//Sentencias a ejecutar</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Aunque se declaren múltiples bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> dentro del código, en Verilog solo existe un único bloque <code class="docutils literal notranslate"><span class="pre">always</span></code>. Para realizar la distinción entre lógica secuencial y combinacional, se utiliza la <em>lista de sensitividad</em>. La <em>lista de sensitividad</em> es una expresión que define cuando el código dentro del bloque <code class="docutils literal notranslate"><span class="pre">always</span></code> definido ha de ser ejecutado. A continuación se muestran ejemplos de eventos que pueden ser incluidos en la lista de sensitividad.</p>
+<ul>
+<li><p>Para lógica combinacional compleja:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@(</span><span class="o">*</span><span class="p">)</span> <span class="k">begin</span> <span class="c1">//El evento * se cumple continuamente</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">a</span> <span class="o">^</span> <span class="n">b</span><span class="p">;</span>    <span class="c1">//Todas estas asignaciones se realizan continuamente</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">;</span>    <span class="c1">//Para logica combinacional usamos asignaciones bloqueantes</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">p</span> <span class="o">^</span> <span class="n">cin</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">=</span> <span class="n">g</span> <span class="o">|</span> <span class="p">(</span><span class="n">p</span> <span class="o">&amp;</span> <span class="n">cin</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</li>
+<li><p>Para lógica secuencial:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span><span class="p">)</span> <span class="k">begin</span> <span class="c1">//Este evento representa los flancos positivos de la señal clk</span>
+    <span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">d</span><span class="p">;</span>                <span class="c1">//Estas asignaciones se realizan en cada flanco positivo de clk</span>
+    <span class="n">q</span> <span class="o">&lt;=</span> <span class="n">n1</span><span class="p">;</span>                <span class="c1">//Para logica secuencial usamos asiganciones no bloqueantes</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="diseno-secuencial">
 <h2>Diseño Secuencial<a class="headerlink" href="#diseno-secuencial" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>En Verilog, al igual que en otros lenguajes de programación como <em>C</em> o <em>Python</em>, existen sentencias condicionales para el control del flujo del código, que permiten describir el funcionamiento de los circuitos secuenciales que se deseen implementar.</p>
-<section id="if-then-else">
+<div class="section" id="if-then-else">
 <h3>If-Then-Else<a class="headerlink" href="#if-then-else" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Esta sentencia condicional permite ejecutar ciertos bloques de código, en caso de que se cumpla alguna condición definida.</p>
 <ul class="simple">
@@ -166,8 +218,8 @@ Considere el siguiente ejemplo:</p>
 </div>
 <p>En ese caso, el valor de <code class="docutils literal notranslate"><span class="pre">q</span></code> se mantiene y no es actualizado constantemente para cualquier condición, por lo que se tiene un latch inferido:</p>
 <img alt="../_images/if_latch.png" class="align-center" src="../_images/if_latch.png" />
-</section>
-<section id="sentencia-case">
+</div>
+<div class="section" id="sentencia-case">
 <h3>Sentencia Case<a class="headerlink" href="#sentencia-case" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>En Verilog la sentencia <code class="docutils literal notranslate"><span class="pre">case</span></code> se implementa de la siguiente manera:</p>
 <div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">expresión</span><span class="o">&gt;</span><span class="p">)</span>
@@ -200,49 +252,15 @@ Considere el siguiente ejemplo:</p>
 <span class="k">endmodule</span>
 </pre></div>
 </div>
-</section>
-<section id="asignaciones-bloqueantes-y-no-bloqueantes">
-<h3>Asignaciones bloqueantes y no-bloqueantes<a class="headerlink" href="#asignaciones-bloqueantes-y-no-bloqueantes" title="Enlazar permanentemente con este título">¶</a></h3>
-</section>
-</section>
-<section id="bloques-always">
-<h2>Bloques Always<a class="headerlink" href="#bloques-always" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>Los bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> en Verilog son utilizados para especificar las acciones a ejecutar en el código; asignaciones, desplazamientos, incluso pueden contener sentencias condicionales como detalladas previamente</p>
-<p>La sintáxis de los bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> se detalla a continuación:</p>
-<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">evento</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">begin</span>
-    <span class="c1">//Sentencias a ejecutar</span>
-<span class="k">end</span>
-</pre></div>
 </div>
-<p>Aunque se declaren múltiples bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> dentro del código, en Verilog solo existe un único bloque <code class="docutils literal notranslate"><span class="pre">always</span></code>. Para realizar la distinción entre lógica secuencial y combinacional, se utiliza la <em>lista de sensitividad</em>. La <em>lista de sensitividad</em> es una expresión que define cuando el código dentro del bloque <code class="docutils literal notranslate"><span class="pre">always</span></code> definido ha de ser ejecutado. A continuación se muestran ejemplos de eventos que pueden ser incluidos en la lista de sensitividad.</p>
-<ul>
-<li><p>Para lógica combinacional compleja:</p>
-<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@(</span><span class="o">*</span><span class="p">)</span> <span class="k">begin</span> <span class="c1">//El evento * se cumple continuamente</span>
-    <span class="n">p</span> <span class="o">=</span> <span class="n">a</span> <span class="o">^</span> <span class="n">b</span><span class="p">;</span>    <span class="c1">//Todas estas asignaciones se realizan continuamente</span>
-    <span class="n">g</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">;</span>    <span class="c1">//Para logica combinacional usamos asignaciones bloqueantes</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">p</span> <span class="o">^</span> <span class="n">cin</span><span class="p">;</span>
-    <span class="n">cout</span> <span class="o">=</span> <span class="n">g</span> <span class="o">|</span> <span class="p">(</span><span class="n">p</span> <span class="o">&amp;</span> <span class="n">cin</span><span class="p">);</span>
-<span class="k">end</span>
-</pre></div>
 </div>
-</li>
-<li><p>Para lógica secuencial:</p>
-<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span><span class="p">)</span> <span class="k">begin</span> <span class="c1">//Este evento representa los flancos positivos de la señal clk</span>
-    <span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">d</span><span class="p">;</span>                <span class="c1">//Estas asignaciones se realizan en cada flanco positivo de clk</span>
-    <span class="n">q</span> <span class="o">&lt;=</span> <span class="n">n1</span><span class="p">;</span>                <span class="c1">//Para logica secuencial usamos asiganciones no bloqueantes</span>
-<span class="k">end</span>
-</pre></div>
-</div>
-</li>
-</ul>
-</section>
-<section id="system-tasks-system-function">
+<div class="section" id="system-tasks-system-function">
 <h2>System Tasks, System Function<a class="headerlink" href="#system-tasks-system-function" title="Enlazar permanentemente con este título">¶</a></h2>
-</section>
-<section id="modulo-testbench">
+</div>
+<div class="section" id="modulo-testbench">
 <h2>Módulo Testbench<a class="headerlink" href="#modulo-testbench" title="Enlazar permanentemente con este título">¶</a></h2>
-</section>
-</section>
+</div>
+</div>
 
 
           </div>
@@ -268,8 +286,9 @@ Considere el siguiente ejemplo:</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Fundamentos del lenguaje Verilog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modulos">Módulos</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tipos-de-dato">Tipos de Dato</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#diseno-secuencial">Diseño Secuencial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asignaciones-bloqueantes-y-no-bloqueantes">Asignaciones bloqueantes y no-bloqueantes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bloques-always">Bloques Always</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#diseno-secuencial">Diseño Secuencial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#system-tasks-system-function">System Tasks, System Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#modulo-testbench">Módulo Testbench</a></li>
 </ul>
@@ -312,7 +331,7 @@ Considere el siguiente ejemplo:</p>
       &copy;2021, Escuela de Ingeniería Eléctrica UCR.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
