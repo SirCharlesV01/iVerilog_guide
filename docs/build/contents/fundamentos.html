@@ -4,11 +4,12 @@
 <html lang="es">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Fundamentos del lenguaje Verilog &#8212; documentación de Guía de Verilog HDL - 0.0.1</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -33,62 +34,160 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="fundamentos-del-lenguaje-verilog">
+  <section id="fundamentos-del-lenguaje-verilog">
 <h1>Fundamentos del lenguaje Verilog<a class="headerlink" href="#fundamentos-del-lenguaje-verilog" title="Enlazar permanentemente con este título">¶</a></h1>
 <p>En esta sección se cubren los principales fundamentos del lenguaje de descripción de hardware Verilog.</p>
-<div class="section" id="modulos">
+<section id="modulos">
 <h2>Módulos<a class="headerlink" href="#modulos" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>Un módulo en Verilog es un bloque de código que ejecuta cierta funcionalidad. Un módulo puede contener una instancia de otro módulo, y el módulo de nivel superior puede comunicarse con los módulos de nivel inferior a través de sus puertos de entrada y salida.</p>
-<div class="section" id="sintaxis">
-<h3>Sintaxis<a class="headerlink" href="#sintaxis" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Los módulos se definen entre las <em>keywords</em> <code class="docutils literal notranslate"><span class="pre">module</span></code> y <code class="docutils literal notranslate"><span class="pre">endmodule</span></code>. El nombre del módulo se coloca inmediatemente después de <code class="docutils literal notranslate"><span class="pre">module</span></code> y además se pueden definir sus puertos, de la siguiente manera:</p>
-<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="p">([</span><span class="n">lista_de_puertos</span><span class="p">]);</span>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">);</span>
+    <span class="k">input</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+    <span class="k">output</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
     <span class="c1">// Contenido del modulo</span>
 <span class="k">endmodule</span>
 </pre></div>
 </div>
+<p>Cada puerto (a, b, c, d) debe ser definido como una entrada o salida, según corresponda.</p>
+</section>
+<section id="tipos-de-dato">
+<h2>Tipos de Dato<a class="headerlink" href="#tipos-de-dato" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Los tipos de dato en Verilog buscan representar elementos de almacenamiento, como los bits en un flip-flop, o elementos de transmisión de datos, cómo buses o cables que interconectan puertas logicas.</p>
+<section id="valores-almacenados">
+<h3>Valores Almacenados<a class="headerlink" href="#valores-almacenados" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Existen 4 distintos valores que pueden ser almaenados en las variables de Verilog:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Valor</p></th>
+<th class="head"><p>Representación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>Representa un cero lógico</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Representa un uno lógico</p></td>
+</tr>
+<tr class="row-even"><td><p>x</p></td>
+<td><p>Representa un valor lógico desconocido (podría ser 1 ó 0)</p></td>
+</tr>
+<tr class="row-odd"><td><p>z</p></td>
+<td><p>Representa un estado de alta impedancia</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="nets">
+<h3>Nets<a class="headerlink" href="#nets" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Los <em>nets</em> son uno de los dos principales tipos de datos presentes en Verilog. Son utilizados para realizar las conexiones entre elementos, ya sean compuertas lógicas o módulos definidos por el usuario.
+Existen distintos tipos de <em>nets</em>, sin embargo el más utilizado es <code class="docutils literal notranslate"><span class="pre">wire</span></code>. Un <code class="docutils literal notranslate"><span class="pre">wire</span></code> en verilog cumple una función similar a los cables que se utilizan en una protoboard para conectar distintos componentes entre sí.</p>
+<img alt="../_images/wires.jpg" class="align-center" src="../_images/wires.jpg" />
+<p>Un único <code class="docutils literal notranslate"><span class="pre">wire</span></code> en verilog es instanciado de la siguiente forma:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="kt">wire</span> <span class="o">&lt;</span><span class="n">nombre</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
 </div>
+<p>Sin embargo existen muchas situaciones donde es útil juntar varios wires para transmitir más de un bit, haciendo uso de la misma instancia. Para esto, se puede instanciar un <code class="docutils literal notranslate"><span class="pre">wire</span></code> de la siguiente manera:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="kt">wire</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">vectWire</span>
+</pre></div>
 </div>
-<div class="section" id="simulacion-y-sintesis">
-<h2>Simulación y Síntesis<a class="headerlink" href="#simulacion-y-sintesis" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>De esta forma, <code class="docutils literal notranslate"><span class="pre">vectWire</span></code> se trata como un vector de 4 elementos. Cada elemento del arreglo puede ser accesado de forma individual:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="n">vectWire</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span> <span class="c1">//Primer elemento</span>
+<span class="n">vectWire</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span> <span class="c1">//Segundo elemento</span>
+<span class="n">vectWire</span><span class="p">[</span><span class="mh">2</span><span class="p">]</span> <span class="c1">// ...</span>
+<span class="n">vectWire</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span>
+</pre></div>
 </div>
-<div class="section" id="convenciones-de-lexico">
-<h2>Convenciones de Léxico<a class="headerlink" href="#convenciones-de-lexico" title="Enlazar permanentemente con este título">¶</a></h2>
+</section>
+<section id="variables">
+<h3>Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Las variables son el otro tipo de dato presente en Verilog. Son una abstracción de un elemento de almacenamiento, por ejemplo un flip-flop. En este caso el tipo de variable mas utilizado en Verilog es el <code class="docutils literal notranslate"><span class="pre">`reg</span></code>, utilizado para modelar registros.</p>
+<img alt="../_images/reg.png" class="align-center" src="../_images/reg.png" />
+<p>Los registros pueden almacenar valores y son instanciados de igual forma que los wires:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="kt">reg</span> <span class="n">r0</span><span class="p">;</span>         <span class="c1">//Registro de 1 bit</span>
+<span class="kt">reg</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">d0</span><span class="p">;</span>   <span class="c1">//Registro de 4 bits</span>
+<span class="kt">reg</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">d1</span><span class="p">;</span>   <span class="c1">//Registro de 8 bits</span>
+</pre></div>
 </div>
-<div class="section" id="tipos-de-datos">
-<h2>Tipos de Datos<a class="headerlink" href="#tipos-de-datos" title="Enlazar permanentemente con este título">¶</a></h2>
-</div>
-<div class="section" id="modelado-por-flujo-de-datos-rtl">
-<h2>Modelado por Flujo de Datos: RTL<a class="headerlink" href="#modelado-por-flujo-de-datos-rtl" title="Enlazar permanentemente con este título">¶</a></h2>
-</div>
-<div class="section" id="modelado-estructural">
-<h2>Modelado Estructural<a class="headerlink" href="#modelado-estructural" title="Enlazar permanentemente con este título">¶</a></h2>
-</div>
-<div class="section" id="diseno-secuencial">
+</section>
+</section>
+<section id="bloques-always">
+<h2>Bloques Always<a class="headerlink" href="#bloques-always" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>to-do</p>
+</section>
+<section id="diseno-secuencial">
 <h2>Diseño Secuencial<a class="headerlink" href="#diseno-secuencial" title="Enlazar permanentemente con este título">¶</a></h2>
-<div class="section" id="if-then-else">
+<p>En Verilog, al igual que en otros lenguajes de programación como <em>C</em> o <em>Python</em>, existen sentencias condicionales para el control del flujo del código, que permiten describir el funcionamiento de los circuitos secuenciales que se deseen implementar.</p>
+<section id="if-then-else">
 <h3>If-Then-Else<a class="headerlink" href="#if-then-else" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Esta sentencia condicional permite ejecutar ciertos bloques de código, en caso de que se cumpla alguna condición definida.</p>
+<ul class="simple">
+<li><p>La expresión se considera verdadera para cualquier valor no incluido en: <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">x,</span> <span class="pre">z]</span></code></p></li>
+<li><p>Si la expresión evaluada es verdadera, se ejecturá todo el código dentro del bloque <code class="docutils literal notranslate"><span class="pre">if</span></code> respectivo</p></li>
+<li><p>Si la expresión evaluada es falsa el código dentro del bloque <code class="docutils literal notranslate"><span class="pre">if</span></code> no será ejecutado</p></li>
+<li><p>En presencia de un bloque else, si la expresión evaluada es falsa, se ejecutará el código dentro del bloque <code class="docutils literal notranslate"><span class="pre">else</span></code></p></li>
+</ul>
+<p>La sintáxis para estos bloques se puede observar a continuación:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="c1">// Para una única expresión:</span>
+<span class="k">if</span> <span class="p">([</span><span class="n">expresión</span><span class="p">])</span> <span class="k">begin</span>
+    <span class="c1">// código a ejectuar sí la expresión es verdadera</span>
+<span class="k">end</span>
+
+<span class="c1">// Para una única expresión con bloque &#39;else&#39;:</span>
+<span class="k">if</span> <span class="p">([</span><span class="n">expresión</span><span class="p">])</span> <span class="k">begin</span>
+    <span class="c1">// código a ejectuar sí la expresión es verdadera</span>
+<span class="k">end</span> <span class="k">else</span> <span class="k">begin</span>
+    <span class="c1">// código a ejectuar sí la expresión es falsa</span>
+<span class="k">end</span>
+
+<span class="c1">// Para multiples expresiones con bloque &#39;else&#39;:</span>
+<span class="k">if</span> <span class="p">([</span><span class="n">expresión0</span><span class="p">])</span> <span class="k">begin</span>
+    <span class="c1">// código a ejecutar si expresión0 es verdadera</span>
+<span class="k">end</span> <span class="k">else</span> <span class="k">if</span> <span class="p">([</span><span class="n">expresión1</span><span class="p">])</span> <span class="k">begin</span>
+    <span class="c1">// código a ejecutar si expresión1 es verdadera</span>
+<span class="k">end</span> <span class="k">else</span> <span class="k">begin</span>
+    <span class="c1">// código a ejecutar si ninguna expresión es verdadera</span>
+<span class="k">end</span>
+</pre></div>
 </div>
-<div class="section" id="asignaciones-bloqueantes-y-no-bloqueantes">
-<h3>Asignaciones bloqueantes y no-bloqueantes<a class="headerlink" href="#asignaciones-bloqueantes-y-no-bloqueantes" title="Enlazar permanentemente con este título">¶</a></h3>
+<p><strong>Importante:</strong> Un bloque If-Else incompleto puede generar latches a la hora de generar la implementación en hardware del circuito. Un bloque If-Else se considera incompleto cuando no posee un bloque <code class="docutils literal notranslate"><span class="pre">else</span></code> que asigne valores a todas las variables involucradas en los bloques <code class="docutils literal notranslate"><span class="pre">if</span></code>. Los latches son problemáticos, ya que pueden generar comportamientos inesperados en el circuito debido a <em>condiciones de carrera</em> indeseadas.</p>
+<p>Los latches se generan ya que una asignación en un bloque <code class="docutils literal notranslate"><span class="pre">if</span></code> sin un <code class="docutils literal notranslate"><span class="pre">else</span></code> implica que el valor debe mantenerse sin cambios para cualquier condición distinta de la definida en el <code class="docutils literal notranslate"><span class="pre">if</span></code>.
+Considere el siguiente ejemplo:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="n">implied_latch</span> <span class="p">(</span><span class="n">en</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">q</span><span class="p">);</span>
+    <span class="k">input</span> <span class="n">en</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
+    <span class="k">output</span> <span class="kt">reg</span> <span class="n">q</span><span class="p">;</span>
+
+    <span class="k">always</span> <span class="p">@</span> <span class="p">(</span><span class="n">en</span> <span class="k">or</span> <span class="n">d</span><span class="p">)</span> <span class="c1">// Si &#39;d&#39; o &#39;en&#39; cambian, se ejecuta la siguiente linea</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">en</span><span class="p">)</span> <span class="k">begin</span>  <span class="c1">// Si en == 1, se actualiza el valor de &#39;q&#39;</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">d</span><span class="p">;</span>
+        <span class="k">end</span>
+<span class="k">endmodule</span>
+</pre></div>
 </div>
-<div class="section" id="flipflops-registros-y-latches">
-<h3>FlipFlops, Registros y Latches<a class="headerlink" href="#flipflops-registros-y-latches" title="Enlazar permanentemente con este título">¶</a></h3>
-</div>
-<div class="section" id="sentencia-case">
+<p>En ese caso, el valor de <code class="docutils literal notranslate"><span class="pre">q</span></code> se mantiene y no es actualizado constantemente para cualquier condición, por lo que se tiene un latch inferido:</p>
+<img alt="../_images/if_latch.png" class="align-center" src="../_images/if_latch.png" />
+</section>
+<section id="sentencia-case">
 <h3>Sentencia Case<a class="headerlink" href="#sentencia-case" title="Enlazar permanentemente con este título">¶</a></h3>
-</div>
-</div>
-<div class="section" id="maquinas-de-estado-sincronicas">
+</section>
+<section id="asignaciones-bloqueantes-y-no-bloqueantes">
+<h3>Asignaciones bloqueantes y no-bloqueantes<a class="headerlink" href="#asignaciones-bloqueantes-y-no-bloqueantes" title="Enlazar permanentemente con este título">¶</a></h3>
+</section>
+</section>
+<section id="maquinas-de-estado-sincronicas">
 <h2>Máquinas de Estado Sincrónicas<a class="headerlink" href="#maquinas-de-estado-sincronicas" title="Enlazar permanentemente con este título">¶</a></h2>
-</div>
-<div class="section" id="system-tasks-system-function">
+</section>
+<section id="system-tasks-system-function">
 <h2>System Tasks, System Function<a class="headerlink" href="#system-tasks-system-function" title="Enlazar permanentemente con este título">¶</a></h2>
-</div>
-<div class="section" id="modulo-testbench">
+</section>
+<section id="modulo-testbench">
 <h2>Módulo Testbench<a class="headerlink" href="#modulo-testbench" title="Enlazar permanentemente con este título">¶</a></h2>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -113,11 +212,8 @@
 <li class="toctree-l1"><a class="reference internal" href="install_iverilog.html">Instalación de iVerilog</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Fundamentos del lenguaje Verilog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modulos">Módulos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#simulacion-y-sintesis">Simulación y Síntesis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#convenciones-de-lexico">Convenciones de Léxico</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tipos-de-datos">Tipos de Datos</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modelado-por-flujo-de-datos-rtl">Modelado por Flujo de Datos: RTL</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modelado-estructural">Modelado Estructural</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tipos-de-dato">Tipos de Dato</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bloques-always">Bloques Always</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#diseno-secuencial">Diseño Secuencial</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#maquinas-de-estado-sincronicas">Máquinas de Estado Sincrónicas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#system-tasks-system-function">System Tasks, System Function</a></li>
@@ -162,7 +258,7 @@
       &copy;2021, Escuela de Ingeniería Eléctrica UCR.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.4</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

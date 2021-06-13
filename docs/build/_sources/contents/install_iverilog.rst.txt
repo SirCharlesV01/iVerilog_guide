@@ -1,3 +1,5 @@
+.. highlight:: bash
+
 Instalación de iVerilog
 =======================
 
