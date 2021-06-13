@@ -78,10 +78,6 @@ Los registros pueden almacenar valores y son instanciados de igual forma que los
     reg [3:0] d0;   //Registro de 4 bits
     reg [7:0] d1;   //Registro de 8 bits
 
-Bloques Always
---------------
-
-to-do
 
 Diseño Secuencial
 -----------------
@@ -148,8 +144,35 @@ Sentencia Case
 Asignaciones bloqueantes y no-bloqueantes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Máquinas de Estado Sincrónicas
-------------------------------
+Bloques Always
+--------------
+
+Los bloques ``always`` en Verilog son utilizados para especificar las acciones a ejecutar en el código; asignaciones, desplazamientos, incluso pueden contener sentencias condicionales como detalladas previamente
+
+La sintáxis de los bloques ``always`` se detalla a continuación::
+
+    always @ (<evento>) begin
+        //Sentencias a ejecutar
+    end
+
+Aunque se declaren múltiples bloques ``always`` dentro del código, en Verilog solo existe un único bloque ``always``. Para realizar la distinción entre lógica secuencial y combinacional, se utiliza la *lista de sensitividad*. La *lista de sensitividad* es una expresión que define cuando el código dentro del bloque ``always`` definido ha de ser ejecutado. A continuación se muestran ejemplos de eventos que pueden ser incluidos en la lista de sensitividad.
+
+* Para lógica combinacional compleja::
+
+    always @(*) begin //El evento * se cumple continuamente
+        p = a ^ b;    //Todas estas asignaciones se realizan continuamente
+        g = a & b;    //Para logica combinacional usamos asignaciones bloqueantes
+        s = p ^ cin;
+        cout = g | (p & cin);
+    end
+
+* Para lógica secuencial::
+
+    always @(posedge clk) begin //Este evento representa los flancos positivos de la señal clk
+        n1 <= d;                //Estas asignaciones se realizan en cada flanco positivo de clk
+        q <= n1;                //Para logica secuencial usamos asiganciones no bloqueantes
+    end
+    
 
 System Tasks, System Function
 -----------------------------

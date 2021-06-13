@@ -115,10 +115,6 @@ Existen distintos tipos de <em>nets</em>, sin embargo el más utilizado es <code
 </div>
 </section>
 </section>
-<section id="bloques-always">
-<h2>Bloques Always<a class="headerlink" href="#bloques-always" title="Enlazar permanentemente con este título">¶</a></h2>
-<p>to-do</p>
-</section>
 <section id="diseno-secuencial">
 <h2>Diseño Secuencial<a class="headerlink" href="#diseno-secuencial" title="Enlazar permanentemente con este título">¶</a></h2>
 <p>En Verilog, al igual que en otros lenguajes de programación como <em>C</em> o <em>Python</em>, existen sentencias condicionales para el control del flujo del código, que permiten describir el funcionamiento de los circuitos secuenciales que se deseen implementar.</p>
@@ -178,8 +174,36 @@ Considere el siguiente ejemplo:</p>
 <h3>Asignaciones bloqueantes y no-bloqueantes<a class="headerlink" href="#asignaciones-bloqueantes-y-no-bloqueantes" title="Enlazar permanentemente con este título">¶</a></h3>
 </section>
 </section>
-<section id="maquinas-de-estado-sincronicas">
-<h2>Máquinas de Estado Sincrónicas<a class="headerlink" href="#maquinas-de-estado-sincronicas" title="Enlazar permanentemente con este título">¶</a></h2>
+<section id="bloques-always">
+<h2>Bloques Always<a class="headerlink" href="#bloques-always" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Los bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> en Verilog son utilizados para especificar las acciones a ejecutar en el código; asignaciones, desplazamientos, incluso pueden contener sentencias condicionales como detalladas previamente</p>
+<p>La sintáxis de los bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> se detalla a continuación:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">evento</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">begin</span>
+    <span class="c1">//Sentencias a ejecutar</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Aunque se declaren múltiples bloques <code class="docutils literal notranslate"><span class="pre">always</span></code> dentro del código, en Verilog solo existe un único bloque <code class="docutils literal notranslate"><span class="pre">always</span></code>. Para realizar la distinción entre lógica secuencial y combinacional, se utiliza la <em>lista de sensitividad</em>. La <em>lista de sensitividad</em> es una expresión que define cuando el código dentro del bloque <code class="docutils literal notranslate"><span class="pre">always</span></code> definido ha de ser ejecutado. A continuación se muestran ejemplos de eventos que pueden ser incluidos en la lista de sensitividad.</p>
+<ul>
+<li><p>Para lógica combinacional compleja:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@(</span><span class="o">*</span><span class="p">)</span> <span class="k">begin</span> <span class="c1">//El evento * se cumple continuamente</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">a</span> <span class="o">^</span> <span class="n">b</span><span class="p">;</span>    <span class="c1">//Todas estas asignaciones se realizan continuamente</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span><span class="p">;</span>    <span class="c1">//Para logica combinacional usamos asignaciones bloqueantes</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">p</span> <span class="o">^</span> <span class="n">cin</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">=</span> <span class="n">g</span> <span class="o">|</span> <span class="p">(</span><span class="n">p</span> <span class="o">&amp;</span> <span class="n">cin</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</li>
+<li><p>Para lógica secuencial:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span><span class="p">)</span> <span class="k">begin</span> <span class="c1">//Este evento representa los flancos positivos de la señal clk</span>
+    <span class="n">n1</span> <span class="o">&lt;=</span> <span class="n">d</span><span class="p">;</span>                <span class="c1">//Estas asignaciones se realizan en cada flanco positivo de clk</span>
+    <span class="n">q</span> <span class="o">&lt;=</span> <span class="n">n1</span><span class="p">;</span>                <span class="c1">//Para logica secuencial usamos asiganciones no bloqueantes</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</li>
+</ul>
 </section>
 <section id="system-tasks-system-function">
 <h2>System Tasks, System Function<a class="headerlink" href="#system-tasks-system-function" title="Enlazar permanentemente con este título">¶</a></h2>
@@ -213,9 +237,8 @@ Considere el siguiente ejemplo:</p>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Fundamentos del lenguaje Verilog</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#modulos">Módulos</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tipos-de-dato">Tipos de Dato</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bloques-always">Bloques Always</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#diseno-secuencial">Diseño Secuencial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#maquinas-de-estado-sincronicas">Máquinas de Estado Sincrónicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bloques-always">Bloques Always</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#system-tasks-system-function">System Tasks, System Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#modulo-testbench">Módulo Testbench</a></li>
 </ul>
