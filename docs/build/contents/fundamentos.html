@@ -169,6 +169,37 @@ Considere el siguiente ejemplo:</p>
 </section>
 <section id="sentencia-case">
 <h3>Sentencia Case<a class="headerlink" href="#sentencia-case" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>En Verilog la sentencia <code class="docutils literal notranslate"><span class="pre">case</span></code> se implementa de la siguiente manera:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">case</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">expresión</span><span class="o">&gt;</span><span class="p">)</span>
+    <span class="nl">case_1:</span> <span class="c1">//Sentencia a ejecutar en el caso 1</span>
+    <span class="nl">case_2:</span> <span class="k">begin</span>
+        <span class="c1">//Multiples sentencias a ejecutar en el caso 2</span>
+    <span class="k">end</span>
+    <span class="k">default</span><span class="o">:</span> <span class="c1">//Código a ejecutar por defecto</span>
+<span class="k">endcase</span>
+</pre></div>
+</div>
+<p>De forma su funcionamiento consiste en evaluar la expresión dada, si esta es igual a alguno de los casos dados, se ejecuta el código correspondiente a este caso. De no ser así, se ejecuta el código por defecto.</p>
+<p>A continuación se presenta la implementación de un módulo multiplexor en Verilog haciendo uso de una sentencia <code class="docutils literal notranslate"><span class="pre">case</span></code>:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="n">mux</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">sel</span><span class="p">,</span> <span class="n">out</span><span class="p">);</span>
+    <span class="c1">//Mux de 3 entradas</span>
+    <span class="k">input</span> <span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">;</span>
+    <span class="c1">//Selector de 2 bits</span>
+    <span class="k">input</span> <span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">sel</span><span class="p">;</span>
+    <span class="c1">//Salida del Mux</span>
+    <span class="k">output</span> <span class="kt">reg</span> <span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">out</span><span class="p">;</span>
+    <span class="c1">//Este bloque se ejecuta cuando cambia cualquiera de las señales de entrada</span>
+    <span class="k">always</span> <span class="p">@</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">sel</span><span class="p">)</span> <span class="k">begin</span>
+        <span class="k">case</span><span class="p">(</span><span class="n">sel</span><span class="p">)</span> <span class="c1">//Nuestra expresión a comparar es el valor de sel</span>
+            <span class="mh">2</span><span class="mb">&#39;b00</span><span class="o">:</span>   <span class="n">out</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+            <span class="mh">2</span><span class="mb">&#39;b01</span><span class="o">:</span>   <span class="n">out</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+            <span class="mh">2</span><span class="mb">&#39;b10</span><span class="o">:</span>   <span class="n">out</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+            <span class="k">default</span><span class="o">:</span> <span class="n">out</span> <span class="o">=</span> <span class="mh">0</span><span class="p">;</span> <span class="c1">//si sel no es 0,1 o 2, out = 0</span>
+        <span class="k">endcase</span>
+    <span class="k">end</span>
+<span class="k">endmodule</span>
+</pre></div>
+</div>
 </section>
 <section id="asignaciones-bloqueantes-y-no-bloqueantes">
 <h3>Asignaciones bloqueantes y no-bloqueantes<a class="headerlink" href="#asignaciones-bloqueantes-y-no-bloqueantes" title="Enlazar permanentemente con este título">¶</a></h3>

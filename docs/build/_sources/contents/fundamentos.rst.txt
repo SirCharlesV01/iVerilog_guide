@@ -141,6 +141,38 @@ En ese caso, el valor de ``q`` se mantiene y no es actualizado constantemente pa
 Sentencia Case
 ^^^^^^^^^^^^^^
 
+En Verilog la sentencia ``case`` se implementa de la siguiente manera::
+
+    case (<expresión>)
+        case_1: //Sentencia a ejecutar en el caso 1
+        case_2: begin
+            //Multiples sentencias a ejecutar en el caso 2
+        end
+        default: //Código a ejecutar por defecto
+    endcase
+
+De forma su funcionamiento consiste en evaluar la expresión dada, si esta es igual a alguno de los casos dados, se ejecuta el código correspondiente a este caso. De no ser así, se ejecuta el código por defecto.
+
+A continuación se presenta la implementación de un módulo multiplexor en Verilog haciendo uso de una sentencia ``case``::
+
+    module mux (a, b, c, sel, out);
+        //Mux de 3 entradas
+        input [2:0] a, b, c;
+        //Selector de 2 bits
+        input [1:0] sel;
+        //Salida del Mux
+        output reg [2:0] out;
+        //Este bloque se ejecuta cuando cambia cualquiera de las señales de entrada
+        always @ (a,b,c,sel) begin
+            case(sel) //Nuestra expresión a comparar es el valor de sel
+                2'b00:   out = a;
+                2'b01:   out = b;
+                2'b10:   out = b;
+                default: out = 0; //si sel no es 0,1 o 2, out = 0
+            endcase
+        end
+    endmodule
+
 Asignaciones bloqueantes y no-bloqueantes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
