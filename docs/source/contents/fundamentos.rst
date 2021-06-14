@@ -66,7 +66,7 @@ De esta forma, ``vectWire`` se trata como un vector de 4 elementos. Cada element
 Variables
 ^^^^^^^^^
 
-Las variables son el otro tipo de dato presente en Verilog. Son una abstracción de un elemento de almacenamiento, por ejemplo un flip-flop. En este caso el tipo de variable mas utilizado en Verilog es el ```reg``, utilizado para modelar registros.
+Las variables son el otro tipo de dato presente en Verilog. Son una abstracción de un elemento de almacenamiento, por ejemplo un flip-flop. En este caso el tipo de variable mas utilizado en Verilog es el ``reg``, utilizado para modelar registros.
 
 .. image:: ./../img/reg.png
     :align: center
@@ -107,7 +107,7 @@ En este caso, ambas asignaciones se realizan simulatáneamente, por lo que en es
 Bloques Always
 --------------
     
-Los bloques ``always`` en Verilog son utilizados para especificar las acciones a ejecutar en el código; asignaciones, desplazamientos, incluso pueden contener sentencias condicionales como detalladas previamente
+Los bloques ``always`` en Verilog son utilizados para especificar las acciones a ejecutar en el código; asignaciones, desplazamientos e incluso pueden contener sentencias condicionales como las que se detallarán más adelante.
 
 La sintáxis de los bloques ``always`` se detalla a continuación::
 
