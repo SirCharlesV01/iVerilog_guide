@@ -227,9 +227,3 @@ A continuación se presenta la implementación de un módulo multiplexor en Veri
             endcase
         end
     endmodule
-
-System Tasks, System Function
------------------------------
-
-Módulo Testbench
-----------------
