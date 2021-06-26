@@ -68,9 +68,9 @@ Variables
 
 Las variables son el otro tipo de dato presente en Verilog. Son una abstracción de un elemento de almacenamiento, por ejemplo un flip-flop. En este caso el tipo de variable mas utilizado en Verilog es el ``reg``, utilizado para modelar registros.
 
-.. image:: ./../img/reg.png
+.. image:: ./../img/regs.svg
     :align: center
- 
+    :scale: 120
 
 Los registros pueden almacenar valores y son instanciados de igual forma que los wires::
 
@@ -189,9 +189,9 @@ Considere el siguiente ejemplo::
 
 En ese caso, el valor de ``q`` se mantiene y no es actualizado constantemente para cualquier condición, por lo que se tiene un latch inferido:
 
-.. image:: ./../img/if_latch.png
+.. image:: ./../img/latch.svg
     :align: center
- 
+    :scale: 120
 
 Sentencia Case
 ^^^^^^^^^^^^^^
@@ -227,3 +227,32 @@ A continuación se presenta la implementación de un módulo multiplexor en Veri
             endcase
         end
     endmodule
+
+
+System Tasks/Functions
+----------------------
+
+Estas son funciones utilizadas, entre otras cosas, para manejar el flujo de la simulación. Son normalmente utilizadas dentro de un módulo ``tester`` encargado de generar las señales de prueba para validar el funcionamiento de los demás módulos (descrito en detalle en la sección :ref:`Escribiendo un Programa Sencillo`). De especial interés para nuestros alcances son las sigueintes funciones:
+
+$dumpfile(<filepath/filename>)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Esta función permite indicar al archivo donde se han de guardar los resultados de la simulación. Se especifica un archivo con extensión .vcd, el cuál puede ser visualizado por GTKWave::
+
+    $dumpfile("resultados.vcd");
+
+
+$dumpvars
+^^^^^^^^^
+
+De esta manera indicamos que se descarguen todos los valores de las variables del diseño al archivo especificado por medio de ``$dumpfile()``::
+
+    $dumpfile("ff_d.vcd");
+    $dumpvars;
+
+$finish
+^^^^^^^
+
+Este comando indica el punto donde se ha de finalizar la simulación, para que esta no sea enciclada indefinidamente dentro de algún bloque ``always``.
+
+Teniendo estos conceptos claros, podemos continuar a la sección :ref:`Escribiendo un Programa Sencillo`, para ver estos fundamentos aplicados al proceso de descripción, compilación y validación del funcionamiento de un flip-flop tipo D.

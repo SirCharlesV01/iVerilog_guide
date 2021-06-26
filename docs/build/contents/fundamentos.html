@@ -106,7 +106,7 @@ Existen distintos tipos de <em>nets</em>, sin embargo el más utilizado es <code
 <section id="variables">
 <h3>Variables<a class="headerlink" href="#variables" title="Enlazar permanentemente con este título">¶</a></h3>
 <p>Las variables son el otro tipo de dato presente en Verilog. Son una abstracción de un elemento de almacenamiento, por ejemplo un flip-flop. En este caso el tipo de variable mas utilizado en Verilog es el <code class="docutils literal notranslate"><span class="pre">reg</span></code>, utilizado para modelar registros.</p>
-<img alt="../_images/reg.png" class="align-center" src="../_images/reg.png" />
+<a class="reference internal image-reference" href="../_images/regs.svg"><img alt="../_images/regs.svg" class="align-center" height="165" src="../_images/regs.svg" width="561" /></a>
 <p>Los registros pueden almacenar valores y son instanciados de igual forma que los wires:</p>
 <div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="kt">reg</span> <span class="n">r0</span><span class="p">;</span>         <span class="c1">//Registro de 1 bit</span>
 <span class="kt">reg</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">d0</span><span class="p">;</span>   <span class="c1">//Registro de 4 bits</span>
@@ -218,7 +218,7 @@ Considere el siguiente ejemplo:</p>
 </pre></div>
 </div>
 <p>En ese caso, el valor de <code class="docutils literal notranslate"><span class="pre">q</span></code> se mantiene y no es actualizado constantemente para cualquier condición, por lo que se tiene un latch inferido:</p>
-<img alt="../_images/if_latch.png" class="align-center" src="../_images/if_latch.png" />
+<a class="reference internal image-reference" href="../_images/latch.svg"><img alt="../_images/latch.svg" class="align-center" height="81" src="../_images/latch.svg" width="277" /></a>
 </section>
 <section id="sentencia-case">
 <h3>Sentencia Case<a class="headerlink" href="#sentencia-case" title="Enlazar permanentemente con este título">¶</a></h3>
@@ -255,11 +255,29 @@ Considere el siguiente ejemplo:</p>
 </div>
 </section>
 </section>
-<section id="system-tasks-system-function">
-<h2>System Tasks, System Function<a class="headerlink" href="#system-tasks-system-function" title="Enlazar permanentemente con este título">¶</a></h2>
+<section id="system-tasks-functions">
+<h2>System Tasks/Functions<a class="headerlink" href="#system-tasks-functions" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Estas son funciones utilizadas, entre otras cosas, para manejar el flujo de la simulación. Son normalmente utilizadas dentro de un módulo <code class="docutils literal notranslate"><span class="pre">tester</span></code> encargado de generar las señales de prueba para validar el funcionamiento de los demás módulos (descrito en detalle en la sección <a class="reference internal" href="guide.html#escribiendo-un-programa-sencillo"><span class="std std-ref">Escribiendo un Programa Sencillo</span></a>). De especial interés para nuestros alcances son las sigueintes funciones:</p>
+<section id="dumpfile-filepath-filename">
+<h3>$dumpfile(&lt;filepath/filename&gt;)<a class="headerlink" href="#dumpfile-filepath-filename" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Esta función permite indicar al archivo donde se han de guardar los resultados de la simulación. Se especifica un archivo con extensión .vcd, el cuál puede ser visualizado por GTKWave:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="n">$dumpfile</span><span class="p">(</span><span class="s">&quot;resultados.vcd&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
 </section>
-<section id="modulo-testbench">
-<h2>Módulo Testbench<a class="headerlink" href="#modulo-testbench" title="Enlazar permanentemente con este título">¶</a></h2>
+<section id="dumpvars">
+<h3>$dumpvars<a class="headerlink" href="#dumpvars" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>De esta manera indicamos que se descarguen todos los valores de las variables del diseño al archivo especificado por medio de <code class="docutils literal notranslate"><span class="pre">$dumpfile()</span></code>:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="n">$dumpfile</span><span class="p">(</span><span class="s">&quot;ff_d.vcd&quot;</span><span class="p">);</span>
+<span class="n">$dumpvars</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="finish">
+<h3>$finish<a class="headerlink" href="#finish" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este comando indica el punto donde se ha de finalizar la simulación, para que esta no sea enciclada indefinidamente dentro de algún bloque <code class="docutils literal notranslate"><span class="pre">always</span></code>.</p>
+<p>Teniendo estos conceptos claros, podemos continuar a la sección <a class="reference internal" href="guide.html#escribiendo-un-programa-sencillo"><span class="std std-ref">Escribiendo un Programa Sencillo</span></a>, para ver estos fundamentos aplicados al proceso de descripción, compilación y validación del funcionamiento de un flip-flop tipo D.</p>
+</section>
 </section>
 </section>
 
@@ -290,8 +308,7 @@ Considere el siguiente ejemplo:</p>
 <li class="toctree-l2"><a class="reference internal" href="#asignaciones-bloqueantes-y-no-bloqueantes">Asignaciones bloqueantes y no-bloqueantes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bloques-always">Bloques Always</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#diseno-secuencial">Diseño Secuencial</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#system-tasks-system-function">System Tasks, System Function</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modulo-testbench">Módulo Testbench</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#system-tasks-functions">System Tasks/Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Escribiendo un Programa Sencillo</a></li>

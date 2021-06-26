@@ -35,26 +35,111 @@
             
   <section id="escribiendo-un-programa-sencillo">
 <h1>Escribiendo un Programa Sencillo<a class="headerlink" href="#escribiendo-un-programa-sencillo" title="Enlazar permanentemente con este título">¶</a></h1>
-<p>Esta sección describe en detalle el proceso de compilación y simulación, para un circuito digital sencillo, con el fin de que los fundamentos de Verilog se vean ejemplificados en la práctica y sean más claros. Se hará uso del compilador iVerilog y el visualizador de formas de onda GTKWave.</p>
+<p>Esta sección describe en detalle el proceso de diseño, compilación y simulación de un flip-flop tipo D en verilog. Los archivos que contienen la descripción del flip-flop y requeridos para la simulación se pueden obtener en este <a class="reference external" href="https://drive.google.com/drive/folders/1FOr-0SCtLgricK0VB0lXFM1SH62FQb76?usp=sharing">link a Google Drive</a>.</p>
 <section id="descripcion-del-circuito">
 <h2>Descripción del circuito<a class="headerlink" href="#descripcion-del-circuito" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Se quiere implementar un flip-flop tipo D, cuyas entradas y salidas se muestran en la siguiente imagen:</p>
+<a class="reference internal image-reference" href="../_images/example_ff.svg"><img alt="../_images/example_ff.svg" class="align-center" height="141" src="../_images/example_ff.svg" width="272" /></a>
+<p>Este módulo tendrá entradas <code class="docutils literal notranslate"><span class="pre">d</span></code> y <code class="docutils literal notranslate"><span class="pre">clk</span></code> y salidas <code class="docutils literal notranslate"><span class="pre">q</span></code> y <code class="docutils literal notranslate"><span class="pre">qn</span></code> y debe replicar correctamente el funcionamiento de un flip-flop tipo D.</p>
 </section>
 <section id="implementacion-en-verilog">
 <h2>Implementación en Verilog<a class="headerlink" href="#implementacion-en-verilog" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Para el proceso de simulación se crean además dos módulos adicionales: <code class="docutils literal notranslate"><span class="pre">tester</span></code> y <code class="docutils literal notranslate"><span class="pre">test_bench</span></code>, los cuales se pueden apreciar en la siguiente imagen</p>
+<a class="reference internal image-reference" href="../_images/test_bench.svg"><img alt="../_images/test_bench.svg" class="align-center" height="321" src="../_images/test_bench.svg" width="297" /></a>
+<p>A continuación se presentan dichos módulos, los cuales se colocaron en archivos separados:</p>
+<section id="dff-v">
+<h3>dff.v<a class="headerlink" href="#dff-v" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este archivo contiene el módulo que describe el funcionamiento del flip-flop D:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="n">dff</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">clk</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">qn</span><span class="p">);</span>
+    <span class="k">input</span> <span class="n">d</span><span class="p">,</span><span class="n">clk</span><span class="p">;</span>
+    <span class="k">output</span> <span class="kt">reg</span> <span class="n">q</span><span class="p">,</span><span class="n">qn</span><span class="p">;</span>
+
+    <span class="c1">//Se inicializan los valores de los regs</span>
+    <span class="k">initial</span> <span class="k">begin</span> <span class="n">q</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span> <span class="n">qn</span><span class="o">=</span><span class="mh">1</span><span class="p">;</span> <span class="k">end</span>
+
+    <span class="c1">//Se realizarán cambios unicament en flancos positivos del reloj</span>
+    <span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span><span class="p">)</span>
+    <span class="k">begin</span>
+        <span class="n">q</span>  <span class="o">&lt;=</span> <span class="n">d</span><span class="p">;</span>
+        <span class="n">qn</span> <span class="o">&lt;=</span> <span class="o">!</span><span class="n">d</span><span class="p">;</span>
+    <span class="k">end</span>
+<span class="k">endmodule</span>
+</pre></div>
+</div>
+<p>Este módulo posee entradas <code class="docutils literal notranslate"><span class="pre">clk</span></code> y <code class="docutils literal notranslate"><span class="pre">d</span></code> y sus salidas son <code class="docutils literal notranslate"><span class="pre">q</span></code> y <code class="docutils literal notranslate"><span class="pre">qn</span></code>, las cuales pueden cambiar de estado únicamente en los flancos positivos del reloj. El bloque <code class="docutils literal notranslate"><span class="pre">initial</span></code> es utilizado para inicializar las los valores de los tipo <code class="docutils literal notranslate"><span class="pre">reg</span></code>.</p>
+</section>
+<section id="tester-v">
+<h3>tester.v<a class="headerlink" href="#tester-v" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este archivo contiene el módulo encargado de generar las señales de prueba para la simulación, sus salidas son las entradas del flip-flop y viceversa:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="k">module</span> <span class="n">tester</span> <span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">qn</span><span class="p">,</span><span class="n">clk</span><span class="p">,</span><span class="n">d</span><span class="p">);</span>
+    <span class="k">input</span> <span class="n">q</span><span class="p">,</span><span class="n">qn</span><span class="p">;</span> <span class="c1">//Definimos las salidas del módulo flipflop como entradas al tester</span>
+    <span class="k">output</span> <span class="n">clk</span><span class="p">,</span><span class="n">d</span><span class="p">;</span>
+    <span class="kt">reg</span> <span class="n">clk</span><span class="p">,</span><span class="n">d</span><span class="p">;</span>
+
+    <span class="c1">//Un bloque always para la señal de reloj, con un periodo de 8 s</span>
+    <span class="k">always</span>
+    <span class="k">begin</span>
+        <span class="p">#</span><span class="mh">4</span> <span class="n">clk</span><span class="o">=!</span><span class="n">clk</span><span class="p">;</span>
+    <span class="k">end</span>
+
+    <span class="c1">//Se hace uso de un bloque initial para generar las señales de prueba</span>
+    <span class="k">initial</span>
+    <span class="k">begin</span>
+        <span class="n">clk</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span>
+        <span class="c1">//Indicamos el archivo de resultados</span>
+        <span class="n">$dumpfile</span><span class="p">(</span><span class="s">&quot;resultados.vcd&quot;</span><span class="p">);</span>
+        <span class="n">$dumpvars</span><span class="p">;</span>
+        <span class="c1">//Genramos la senal de prueba d</span>
+        <span class="n">d</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span> <span class="p">#</span><span class="mh">9</span> <span class="n">d</span><span class="o">=</span><span class="mh">1</span><span class="p">;</span> <span class="p">#</span><span class="mh">1</span> <span class="n">d</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span> <span class="p">#</span><span class="mh">1</span> <span class="n">d</span><span class="o">=</span><span class="mh">1</span><span class="p">;</span> <span class="p">#</span><span class="mh">2</span> <span class="n">d</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span> <span class="p">#</span><span class="mh">1</span> <span class="n">d</span><span class="o">=</span><span class="mh">1</span><span class="p">;</span> <span class="p">#</span><span class="mh">12</span> <span class="n">d</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span>
+        <span class="p">#</span><span class="mh">1</span> <span class="n">d</span><span class="o">=</span><span class="mh">1</span><span class="p">;</span> <span class="p">#</span><span class="mh">2</span> <span class="n">d</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span> <span class="p">#</span><span class="mh">1</span> <span class="n">d</span><span class="o">=</span><span class="mh">1</span><span class="p">;</span> <span class="p">#</span><span class="mh">1</span> <span class="n">d</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span> <span class="p">#</span><span class="mh">1</span> <span class="n">d</span><span class="o">=</span><span class="mh">1</span><span class="p">;</span> <span class="p">#</span><span class="mh">1</span> <span class="n">d</span><span class="o">=</span><span class="mh">0</span><span class="p">;</span> <span class="p">#</span> <span class="mh">7</span> <span class="n">d</span><span class="o">=</span><span class="mh">1</span><span class="p">;</span>
+        <span class="p">#</span><span class="mh">8</span> <span class="nb">$finish</span><span class="p">;</span> <span class="c1">// Terminamos la simulación</span>
+    <span class="k">end</span>
+<span class="k">endmodule</span>
+</pre></div>
+</div>
+<p>Este módulo genera la señal de reloj haciendo uso de un bloque always y los retardos introducidos por <code class="docutils literal notranslate"><span class="pre">#n</span></code>, siendo n las unidades de tiempo correspondientes al retardo. De esta forma el reloj cambia su valor entre 0 y 1 cada 4 unidades de tiempo para obtener una señal cuadrada con un periodo de 8 unidades de tiempo (segundos por defecto).</p>
+<p>Algo similar se hace en el bloque initial para variar la señal <code class="docutils literal notranslate"><span class="pre">d</span></code> de forma arbitraria. En adición a esto, en el bloque initial se encuentran las <em>system functions</em> requeridas para descargar los resultados de la simulación en el archivo <em>resultados.vcd</em>.</p>
+<p>Finalmente el comando <code class="docutils literal notranslate"><span class="pre">$finish</span></code> indica el final de la simulación, para que esta no continúe indefinidamente.</p>
+</section>
+<section id="testbench-v">
+<h3>testbench.v<a class="headerlink" href="#testbench-v" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Este es el módulo <em>top</em>. Consiste en una decripción estructural de las conexiones entre el módulo <code class="docutils literal notranslate"><span class="pre">tester</span></code> y el módulo <code class="docutils literal notranslate"><span class="pre">dff</span></code>:</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="no">`include</span> <span class="s">&quot;dff.v&quot;</span>
+<span class="no">`include</span> <span class="s">&quot;tester.v&quot;</span>
+
+<span class="k">module</span> <span class="n">testbench</span><span class="p">;</span>
+    <span class="kt">wire</span> <span class="n">clk</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">qn</span><span class="p">;</span>
+    <span class="n">dff</span> <span class="n">ff1</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">clk</span><span class="p">,</span><span class="n">q</span><span class="p">,</span><span class="n">qn</span><span class="p">);</span>
+    <span class="n">tester</span> <span class="n">tst1</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">qn</span><span class="p">,</span><span class="n">clk</span><span class="p">,</span><span class="n">d</span><span class="p">);</span>
+<span class="k">endmodule</span>
+</pre></div>
+</div>
+<p>Se puede pensar en este módulo como la protoboard donde se coloca el flip-flop y se conecta al <code class="docutils literal notranslate"><span class="pre">tester</span></code> por medio de cables. Es importante incluir los archivos que contienen los módulos  <code class="docutils literal notranslate"><span class="pre">tester</span></code> y <code class="docutils literal notranslate"><span class="pre">dff</span></code> instanciados, ya que de otra forma el compilador retornará un error.</p>
+</section>
 </section>
 <section id="compilacion-y-simulacion">
 <h2>Compilación y Simulación<a class="headerlink" href="#compilacion-y-simulacion" title="Enlazar permanentemente con este título">¶</a></h2>
+<p>Una vez realizadas las descripciones en Verilog de nuestros módulos, procedemos a la etapa de compilación y verificación.</p>
 <section id="iverilog">
 <h3>iVerilog<a class="headerlink" href="#iverilog" title="Enlazar permanentemente con este título">¶</a></h3>
-</section>
-<section id="resultados-en-terminal">
-<h3>Resultados en Terminal<a class="headerlink" href="#resultados-en-terminal" title="Enlazar permanentemente con este título">¶</a></h3>
-</section>
-<section id="archivos-de-resultados">
-<h3>Archivos de Resultados<a class="headerlink" href="#archivos-de-resultados" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Para compilar el diseño realizado ejecutamos el siguiente comando desde una terminal en el directorio que contiene los tres archivos descritos:</p>
+<p><code class="docutils literal notranslate"><span class="pre">iverilog</span> <span class="pre">-o</span> <span class="pre">dff_out</span> <span class="pre">test_bench.v</span></code></p>
+<p>De esta forma llamamos al compilador y le indicamos que almacene la salida compilada en el archivo dff_out. Además indicamos que compile a partir del archivo <em>test_bench.v</em>, donde se encuentran las instancias de nuestro flip-flop y probador.</p>
+<p>Una vez obtenido el archivo compilado, es necesario ejecutar el simulador de iVerilog; vvp procesa el archivo compilado para obtener como resultado las señales en el tiempo correspondientes al diseño implementado:</p>
+<p><code class="docutils literal notranslate"><span class="pre">vvp</span> <span class="pre">dff_out</span></code></p>
+<p>Esto genera el archivo <em>resultados.vcd</em> según se indicó en la función <code class="docutils literal notranslate"><span class="pre">$dumpfile</span></code> dentro del probador.</p>
 </section>
 <section id="gtkwave">
 <h3>GTKWave<a class="headerlink" href="#gtkwave" title="Enlazar permanentemente con este título">¶</a></h3>
+<p>Finalmente, una vez obtenido el archivo de resultados, este puede ser visualizado con el software GTKWave de la siguiente manera:</p>
+<p><code class="docutils literal notranslate"><span class="pre">gtkwave</span> <span class="pre">resultados.vcd</span></code></p>
+<p>Lo que desplegará la interfaz gráfica del programa:</p>
+<img alt="../_images/ej_gtk1.PNG" class="align-center" src="../_images/ej_gtk1.PNG" />
+<p>Luego, accediendo a la instancia tst1 puede desplegar las ondas correspondientes haciendo doble click en cada una:</p>
+<img alt="../_images/ej_gtk2.PNG" class="align-center" src="../_images/ej_gtk2.PNG" />
+<p>Las señales obtenidas se presentan con mayor detalle en la siguiente imagen:</p>
+<img alt="../_images/signals.PNG" class="align-center" src="../_images/signals.PNG" />
+<p>Podemos ver en primer lugar que se cumple el comportamiento esperado para un flip-flop tipo D. El valor de sus salidas Q y Qn no varía al cambiar su entrada D si no es en un flanco positivo de la señal de reloj CLK. De esta manera, validamos el funcionamiento del diseño realizado.</p>
 </section>
 </section>
 </section>
