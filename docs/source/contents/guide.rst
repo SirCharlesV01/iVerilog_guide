@@ -136,7 +136,7 @@ Lo que desplegará la interfaz gráfica del programa:
 
 Luego, accediendo a la instancia tst1 puede desplegar las ondas correspondientes haciendo doble click en cada una:
 
-.. image:: ./../img/ej_gtk2.PNG
+.. image:: ./../img/ej_gtk2.png
     :align: center
 
 Las señales obtenidas se presentan con mayor detalle en la siguiente imagen:
